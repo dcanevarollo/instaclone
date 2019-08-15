@@ -1,0 +1,5 @@
+# Adiciona a dependência do JSON Server (para simular o servidor JSON)
+yarn add json-server -D  # Apenas em desenvolvimento
+
+# Inicia o servidor JSON, com um delay de 1s por req. e hot-reload habilitado.
+yarn json-server <server-name> -d <delay> -w  # e.g. yarn json-server server.json -d 1000 -w
