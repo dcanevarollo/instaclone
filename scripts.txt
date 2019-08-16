@@ -3,3 +3,9 @@ yarn add json-server -D  # Apenas em desenvolvimento
 
 # Inicia o servidor JSON, com um delay de 1s por req. e hot-reload habilitado.
 yarn json-server <server-name> -d <delay> -w  # e.g. yarn json-server server.json -d 1000 -w
+
+# Adicionar dependências do React Navigation (navegação entre os componentes)
+yarn add react-navigation react-native-gesture-handler react-native-reanimated
+
+# Adicionar dependência do Styled Components
+yarn add styled-components
