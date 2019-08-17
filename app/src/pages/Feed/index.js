@@ -4,7 +4,19 @@
  * Componente de visualização do feed da aplicação.
  */
 import React, { useState, useEffect } from 'react';
-import { View } from 'react-native'
+import { 
+    View,
+    FlatList  // Listagem com scroll.
+} from 'react-native'
+
+import { 
+    Post,
+    Header,
+    Avatar,
+    Name,
+    PostImage,
+    Description
+} from './styles';
 
 export default function Feed() {
     let [feed, setFeed] = useState([]);
@@ -25,9 +37,30 @@ export default function Feed() {
 
             setFeed(data);
         }
+
+        loadFeed();
     }, []);
 
     return (
-        <View />
+        <View>
+            <FlatList 
+                data={feed}
+                keyExtractor={post => String(post.id)}
+                renderItem={({ item }) => (
+                    <Post>
+                        <Header>
+                            <Avatar source={{ uri: item.author.avatar }} />
+                            <Name>{item.author.name}</Name>
+                        </Header>
+
+                        <PostImage ratio={item.aspectRatio} source={{ uri: item.image }} />
+
+                        <Description>
+                            <Name>{item.author.name}</Name> {item.description}
+                        </Description>
+                    </Post>
+                )}
+            />
+        </View>
     );
 }
