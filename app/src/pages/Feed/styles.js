@@ -27,12 +27,6 @@ export const Name = styled.Text`
     font-weight: bold;
 `;
 
-export const PostImage = styled.Image`
-    width: 100%;
-    /* A propriedade deverá ser pega pela pelo componente (das props recebida, pego a ratio). */
-    aspect-ratio: ${props => props.ratio};
-`;
-
 export const Description = styled.Text`
     padding: 15px;
     line-height: 18px;

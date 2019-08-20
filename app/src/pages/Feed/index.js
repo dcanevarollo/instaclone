@@ -9,12 +9,13 @@ import {
     FlatList  // Listagem com scroll.
 } from 'react-native'
 
+import LazyImage from '../../components/LazyImage
+
 import { 
     Post,
     Header,
     Avatar,
     Name,
-    PostImage,
     Description,
     Loading
 } from './styles';
@@ -100,7 +101,11 @@ export default function Feed() {
                             <Name>{item.author.name}</Name>
                         </Header>
 
-                        <PostImage ratio={item.aspectRatio} source={{ uri: item.image }} />
+                        <LazyImage 
+                            aspectRatio={item.aspectRatio} 
+                            source={{ uri: item.image }}
+                            smallSource={{ uri: item.small }}
+                        />
 
                         <Description>
                             <Name>{item.author.name}</Name> {item.description}
