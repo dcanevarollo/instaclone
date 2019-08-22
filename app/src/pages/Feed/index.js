@@ -9,7 +9,7 @@ import {
     FlatList  // Listagem com scroll.
 } from 'react-native'
 
-import LazyImage from '../../components/LazyImage
+import LazyImage from '../../components/LazyImage';
 
 import { 
     Post,
