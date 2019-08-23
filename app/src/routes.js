@@ -10,7 +10,7 @@ import {
     createStackNavigator  // O stack navigator automaticamente cria um header na aplicação.
 } from 'react-navigation';
 
-import logo from '../assets/instagram.png';
+import logo from './assets/instagram.png';
 
 import Feed from './pages/Feed';
 

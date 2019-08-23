@@ -3,7 +3,7 @@
  * 
  * Componente de visualização do feed da aplicação.
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
     View,
     FlatList  // Listagem com scroll.
@@ -26,6 +26,7 @@ export default function Feed() {
     const [total, setTotal] = useState(0);
     const [loading, setLoading] = useState(false);
     const [refreshing, setRefreshing] = useState(false);
+    const [viewable, setViewable] = useState([]);
 
     /**
      * Carrega a página corrente (pageNumber) na tela, buscando as informações do servidor JSON.
@@ -74,6 +75,17 @@ export default function Feed() {
     }
 
     /**
+     * A função deve ser declarada usando o callback do React pois este "memoriza-a", não sendo necessário chamá-la
+     * novamente quando o estado de sensibilidade de determinada função for acionada.
+     * O setChanged() armazenará o id dos itens que foram alterados.
+     * 
+     * @param changed : itens que não estavam visíveis mas agora estão (todos os itens da FlatList).
+     */
+    const handleViewaleChanged = useCallback(({ changed }) => {
+        setViewable(changed.map(({ item }) => item.id));
+    }, []);
+
+    /**
      * Ao carregar a tela, carregaremos o feed do servidor para exibirmos na tela principal.
      * Como o parâmetro de sensibiidade está vazio, só será executado uma vez (no início).
      */
@@ -93,6 +105,13 @@ export default function Feed() {
                 onEndReachedThreshold={0.1}
                 onRefresh={refreshList}
                 refreshing={refreshing}
+                /* Função disparada quando os itens visíveis na tela são carregados. */
+                onViewableItemsChanged={handleViewaleChanged}
+                /* Carrega a imagem quando a visibilidade da mesma for de 10%. */
+                viewabilityConfig={{ 
+                    minimumViewTime: 1000,
+                    viewAreaCoveragePercentThreshold: 20 
+                }}
                 ListFooterComponent={loading && <Loading />}
                 renderItem={({ item }) => (
                     <Post>
@@ -101,7 +120,8 @@ export default function Feed() {
                             <Name>{item.author.name}</Name>
                         </Header>
 
-                        <LazyImage 
+                        <LazyImage
+                            shouldLoad={viewable.includes(item.id)}
                             aspectRatio={item.aspectRatio} 
                             source={{ uri: item.image }}
                             smallSource={{ uri: item.small }}

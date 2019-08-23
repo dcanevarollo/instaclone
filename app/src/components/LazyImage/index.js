@@ -19,21 +19,33 @@ const OriginalAnimated = Animated.createAnimatedComponent(Original);
 export default function LazyImage({
     smallSource,
     source,
-    aspectRatio
+    aspectRatio,
+    shouldLoad
 }) {
+    const opacity = new Animated.Value(0);
     const [loaded, setLoaded] = useState(false);
 
     /**
-     * Utiliza um delay de 1s para carregar a imagem original.
+     * Utiliza um delay de 1s para carregar a imagem original. É disparado se a propriedade shouldLoad for verdadeira
+     * (ou ser alterada). Esta, por sinal, é atribuída no feed quando o usuário consegue visualizar a imagem.
      */
     useEffect(() => {
-        setTimeout(() => {
-            setLoaded(true);
-        }, 1000);
-    }, []);
+        if (shouldLoad) {
+            setTimeout(() => {
+                setLoaded(true);
+            }, 500);
+        }
+    }, [shouldLoad]);
 
+    /**
+     * Anima a variável opacity quando a função for chamada.
+     */
     function handleAnimate() {
-
+        Animated.timing(opacity, {
+            toValue: 1,
+            duration: 500,
+            useNativeDriver: true  // Faz com que a animação ocorra no lado nativo da aplicação (Java ou Objective C).
+        }).start();
     }
 
     return(
@@ -45,7 +57,8 @@ export default function LazyImage({
         >
             { 
                 loaded && 
-                    <OriginalAnimated 
+                    <OriginalAnimated
+                        style={{ opacity }} 
                         source={source}
                         ratio={aspectRatio}
                         resizeMode="contain"
